@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jingya's Magic Horoscope Newsletter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0d1a;
+      color: #e8e0f0;
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(160deg, #0d0d1a 0%, #1a0a2e 50%, #0d0d1a 100%);
+      text-align: center;
+      padding: 70px 20px 50px;
+      border-bottom: 1px solid #2a1a4a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(120,80,200,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: white;
+      opacity: 0;
+      animation: twinkle var(--d, 3s) infinite var(--delay, 0s);
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: var(--op, 0.8); }
+    }
+
+    .tagline {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: #9b7fd4;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      color: #f0eaff;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    h1 em {
+      color: #c9a0ff;
+      font-style: italic;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #7a6a9a;
+      margin-top: 10px;
+      letter-spacing: 2px;
+    }
+
+    .moon-divider {
+      margin: 28px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      max-width: 400px;
+      color: #4a3a6a;
+      font-size: 1.2rem;
+    }
+
+    .moon-divider::before, .moon-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #4a3a6a);
+    }
+
+    .moon-divider::after {
+      background: linear-gradient(to left, transparent, #4a3a6a);
+    }
+
+    /* INTRO */
+    .intro {
+      max-width: 720px;
+      margin: 50px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .intro p {
+      font-size: 1.05rem;
+      color: #b0a0cc;
+      line-height: 1.9;
+    }
+
+    .intro .highlight {
+      color: #c9a0ff;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+    }
+
+    /* PLANET BAR */
+    .planet-bar {
+      background: #110820;
+      border-top: 1px solid #2a1a4a;
+      border-bottom: 1px solid #2a1a4a;
+      padding: 18px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6a5a8a;
+      margin-bottom: 60px;
+    }
+
+    .planet-bar span { color: #9b7fd4; }
+
+    /* SIGNS GRID */
+    .section-title {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #c9a0ff;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+
+    .signs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .sign-card {
+      background: linear-gradient(135deg, #110820 0%, #0f0a1e 100%);
+      border: 1px solid #2a1a4a;
+      border-radius: 16px;
+      padding: 28px 26px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .sign-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .sign-card:hover {
+      transform: translateY(-4px);
+      border-color: #4a2a7a;
+    }
+
+    .sign-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .sign-symbol {
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+
+    .sign-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #f0eaff;
+      margin-bottom: 2px;
+    }
+
+    .sign-info .dates {
+      font-size: 0.75rem;
+      color: #6a5a8a;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .sign-info .element {
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .sign-card p {
+      font-size: 0.92rem;
+      color: #a090bc;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .themes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .theme-tag {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(155,127,212,0.1);
+      border: 1px solid rgba(155,127,212,0.2);
+      color: #9b7fd4;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .lucky {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: #6a5a8a;
+      letter-spacing: 1px;
+    }
+
+    .lucky span {
+      color: #9b7fd4;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #080810;
+      border-top: 1px solid #1a0a2e;
+      text-align: center;
+      padding: 40px 24px;
+      color: #4a3a6a;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+    }
+
+    footer p { margin-bottom: 6px; }
+    footer .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #6a4a9a;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="stars" id="stars"></div>
+  <p class="tagline">Celestial Insights &bull; Volume XII &bull; March 2026</p>
+  <h1>Jingya's <em>Magic</em> Horoscope Newsletter</h1>
+  <p class="subtitle">Your Monthly Guide to the Stars</p>
+  <div class="moon-divider">&#9790;</div>
+</header>
+
+<section class="intro">
+  <p>
+    <span class="highlight">March arrives on the wings of Pisces season</span>, carrying with it a deep current of intuition, healing, and spiritual renewal. As the sun crosses into Aries on the 20th, the wheel of the zodiac begins anew — a powerful moment for rebirth and bold beginnings.
+  </p>
+  <br>
+  <p>
+    With Venus stationing direct and Jupiter expanding in Gemini, this month asks us to speak our truths, open our hearts, and trust the invisible hand of the cosmos. Read on to discover what March holds for your sign.
+  </p>
+</section>
+
+<div class="planet-bar">
+  Sun in Pisces &rarr; Aries &nbsp;|&nbsp;
+  <span>Venus Direct</span> &nbsp;|&nbsp;
+  Jupiter in Gemini &nbsp;|&nbsp;
+  <span>Saturn in Pisces</span> &nbsp;|&nbsp;
+  Full Moon: March 3 &nbsp;|&nbsp;
+  <span>New Moon: March 18</span>
+</div>
+
+<div class="section-title">Your March Horoscopes</div>
+
+<div class="signs-grid">
+
+  <!-- Aries -->
+  <div class="sign-card" style="--accent: #ff6b6b;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9800;</div>
+      <div class="sign-info">
+        <h2>Aries</h2>
+        <div class="dates">March 21 &ndash; April 19</div>
+        <div class="element">Fire &bull; Cardinal</div>
+      </div>
+    </div>
+    <p>The sun's entry into your sign on March 20 ignites your solar new year — a time of fresh starts and unstoppable momentum. You've been quietly building, and now the universe gives you the green light. A career opportunity near the full moon deserves your full attention. Don't let self-doubt slow your stride.</p>
+    <div class="themes">
+      <span class="theme-tag">New Beginnings</span>
+      <span class="theme-tag">Career</span>
+      <span class="theme-tag">Identity</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Crimson</span> &nbsp;&bull;&nbsp; Power day: <span>March 20</span></div>
+  </div>
+
+  <!-- Taurus -->
+  <div class="sign-card" style="--accent: #51cf66;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9801;</div>
+      <div class="sign-info">
+        <h2>Taurus</h2>
+        <div class="dates">April 20 &ndash; May 20</div>
+        <div class="element">Earth &bull; Fixed</div>
+      </div>
+    </div>
+    <p>March invites you to slow down and tend to your inner world. The Pisces sun illuminates your 12th house of rest and reflection — this is sacred time, not lost time. Finances stabilize mid-month as Venus stations direct. A private matter you've been avoiding finally finds resolution before the new moon.</p>
+    <div class="themes">
+      <span class="theme-tag">Rest</span>
+      <span class="theme-tag">Finances</span>
+      <span class="theme-tag">Closure</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Forest Green</span> &nbsp;&bull;&nbsp; Power day: <span>March 11</span></div>
+  </div>
+
+  <!-- Gemini -->
+  <div class="sign-card" style="--accent: #ffd43b;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9802;</div>
+      <div class="sign-info">
+        <h2>Gemini</h2>
+        <div class="dates">May 21 &ndash; June 20</div>
+        <div class="element">Air &bull; Mutable</div>
+      </div>
+    </div>
+    <p>Jupiter in your sign keeps the wind at your back all month. Social connections are electric — an introduction made in early March could reshape your professional landscape by summer. Your mind is sharp and your words carry unusual weight. Use this power wisely; a heartfelt conversation heals an old wound.</p>
+    <div class="themes">
+      <span class="theme-tag">Networking</span>
+      <span class="theme-tag">Communication</span>
+      <span class="theme-tag">Luck</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Amber</span> &nbsp;&bull;&nbsp; Power day: <span>March 7</span></div>
+  </div>
+
+  <!-- Cancer -->
+  <div class="sign-card" style="--accent: #74c0fc;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9803;</div>
+      <div class="sign-info">
+        <h2>Cancer</h2>
+        <div class="dates">June 21 &ndash; July 22</div>
+        <div class="element">Water &bull; Cardinal</div>
+      </div>
+    </div>
+    <p>The full moon in Virgo on March 3 lands in your house of communication, bringing an important message or decision to a head. Career matters surge forward after the 20th. You may feel pulled between ambition and the comfort of home — know that honoring both is possible. Someone from your past resurfaces with good news.</p>
+    <div class="themes">
+      <span class="theme-tag">Career</span>
+      <span class="theme-tag">Home</span>
+      <span class="theme-tag">Messages</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Silver Blue</span> &nbsp;&bull;&nbsp; Power day: <span>March 3</span></div>
+  </div>
+
+  <!-- Leo -->
+  <div class="sign-card" style="--accent: #ff922b;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9804;</div>
+      <div class="sign-info">
+        <h2>Leo</h2>
+        <div class="dates">July 23 &ndash; August 22</div>
+        <div class="element">Fire &bull; Fixed</div>
+      </div>
+    </div>
+    <p>Your public reputation glows this month as the sun illuminates your house of shared resources and transformation. A collaboration or joint venture gains traction. Romance deepens beautifully after Venus stations direct — say what's in your heart. Mid-month brings a creative breakthrough you'll want to act on immediately.</p>
+    <div class="themes">
+      <span class="theme-tag">Romance</span>
+      <span class="theme-tag">Collaboration</span>
+      <span class="theme-tag">Creativity</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Gold</span> &nbsp;&bull;&nbsp; Power day: <span>March 16</span></div>
+  </div>
+
+  <!-- Virgo -->
+  <div class="sign-card" style="--accent: #94d82d;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9805;</div>
+      <div class="sign-info">
+        <h2>Virgo</h2>
+        <div class="dates">August 23 &ndash; September 22</div>
+        <div class="element">Earth &bull; Mutable</div>
+      </div>
+    </div>
+    <p>The full moon in your sign on March 3 is a landmark moment — clarity arrives about a relationship or personal goal you've been wrestling with. Trust your instincts; they've never been sharper. A partnership offer comes into focus by mid-month. Health and wellness routines you establish now will anchor you for months ahead.</p>
+    <div class="themes">
+      <span class="theme-tag">Clarity</span>
+      <span class="theme-tag">Partnerships</span>
+      <span class="theme-tag">Wellness</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Sage Green</span> &nbsp;&bull;&nbsp; Power day: <span>March 3</span></div>
+  </div>
+
+  <!-- Libra -->
+  <div class="sign-card" style="--accent: #f783ac;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9806;</div>
+      <div class="sign-info">
+        <h2>Libra</h2>
+        <div class="dates">September 23 &ndash; October 22</div>
+        <div class="element">Air &bull; Cardinal</div>
+      </div>
+    </div>
+    <p>Venus, your ruling planet, stations direct this month — and you'll feel the emotional fog lift almost overnight. A stalled relationship finds its footing again. Creative projects that felt blocked begin to flow. The new moon on March 18 is ideal for planting seeds in love, beauty, or any artistic endeavor close to your heart.</p>
+    <div class="themes">
+      <span class="theme-tag">Love</span>
+      <span class="theme-tag">Creativity</span>
+      <span class="theme-tag">Renewal</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Rose</span> &nbsp;&bull;&nbsp; Power day: <span>March 18</span></div>
+  </div>
+
+  <!-- Scorpio -->
+  <div class="sign-card" style="--accent: #cc5de8;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9807;</div>
+      <div class="sign-info">
+        <h2>Scorpio</h2>
+        <div class="dates">October 23 &ndash; November 21</div>
+        <div class="element">Water &bull; Fixed</div>
+      </div>
+    </div>
+    <p>March is a deeply transformative chapter for you. The Pisces energy flows beautifully with your watery nature, awakening dormant creativity and psychic sensitivity. A financial matter tied to shared resources resolves in your favor. Don't be afraid to ask for what you deserve. The universe is listening — and it tends to say yes to Scorpios this month.</p>
+    <div class="themes">
+      <span class="theme-tag">Transformation</span>
+      <span class="theme-tag">Finances</span>
+      <span class="theme-tag">Intuition</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Deep Violet</span> &nbsp;&bull;&nbsp; Power day: <span>March 22</span></div>
+  </div>
+
+  <!-- Sagittarius -->
+  <div class="sign-card" style="--accent: #ff6b35;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9808;</div>
+      <div class="sign-info">
+        <h2>Sagittarius</h2>
+        <div class="dates">November 22 &ndash; December 21</div>
+        <div class="element">Fire &bull; Mutable</div>
+      </div>
+    </div>
+    <p>Adventure calls — and March answers. Travel plans or a bold educational pursuit accelerates this month. Your ruling planet Jupiter expands your social world in exciting directions. A chance encounter in the first week of March could evolve into something meaningful. Home life may require some extra attention after the 20th; balance is the month's real lesson.</p>
+    <div class="themes">
+      <span class="theme-tag">Travel</span>
+      <span class="theme-tag">Learning</span>
+      <span class="theme-tag">Balance</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Turquoise</span> &nbsp;&bull;&nbsp; Power day: <span>March 5</span></div>
+  </div>
+
+  <!-- Capricorn -->
+  <div class="sign-card" style="--accent: #a9e34b;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9809;</div>
+      <div class="sign-info">
+        <h2>Capricorn</h2>
+        <div class="dates">December 22 &ndash; January 19</div>
+        <div class="element">Earth &bull; Cardinal</div>
+      </div>
+    </div>
+    <p>Your professional life takes a rewarding turn as March unfolds. Recognition you've long deserved begins arriving — accept it graciously. The full moon highlights creative self-expression; a side project or passion could gain unexpected momentum. In matters of the heart, vulnerability is your superpower this month. Let someone in.</p>
+    <div class="themes">
+      <span class="theme-tag">Recognition</span>
+      <span class="theme-tag">Passion Projects</span>
+      <span class="theme-tag">Vulnerability</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Olive</span> &nbsp;&bull;&nbsp; Power day: <span>March 13</span></div>
+  </div>
+
+  <!-- Aquarius -->
+  <div class="sign-card" style="--accent: #4dabf7;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9810;</div>
+      <div class="sign-info">
+        <h2>Aquarius</h2>
+        <div class="dates">January 20 &ndash; February 18</div>
+        <div class="element">Air &bull; Fixed</div>
+      </div>
+    </div>
+    <p>Fresh off your birthday season, you carry new clarity into March. Financial themes are prominent — a smart investment decision made before the new moon pays dividends later. Your unconventional ideas find a wider audience mid-month; don't downplay them. Community and friendship bring unexpected joy. Someone admires you more than you realize.</p>
+    <div class="themes">
+      <span class="theme-tag">Finance</span>
+      <span class="theme-tag">Innovation</span>
+      <span class="theme-tag">Community</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Electric Blue</span> &nbsp;&bull;&nbsp; Power day: <span>March 25</span></div>
+  </div>
+
+  <!-- Pisces -->
+  <div class="sign-card" style="--accent: #9b7fd4;">
+    <div class="sign-header">
+      <div class="sign-symbol">&#9811;</div>
+      <div class="sign-info">
+        <h2>Pisces</h2>
+        <div class="dates">February 19 &ndash; March 20</div>
+        <div class="element">Water &bull; Mutable</div>
+      </div>
+    </div>
+    <p>This is your month, dear Pisces. The sun in your sign bathes you in a rare luminescence — others see your magic clearly now. Your birthday new moon on March 18 is a potent portal for setting intentions that will shape the entire year ahead. Love, creativity, and spiritual insight converge. Trust your dreams; at least one is about to come true.</p>
+    <div class="themes">
+      <span class="theme-tag">Rebirth</span>
+      <span class="theme-tag">Manifestation</span>
+      <span class="theme-tag">Spirituality</span>
+    </div>
+    <div class="lucky">Lucky color: <span>Lavender</span> &nbsp;&bull;&nbsp; Power day: <span>March 18</span></div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Jingya's Magic Horoscope Newsletter</div>
+  <p>March 2026 &nbsp;&bull;&nbsp; Celestial Insights for Every Sign</p>
+  <p style="margin-top:10px; font-size:0.75rem;">For entertainment purposes. The stars illuminate — you decide.</p>
+</footer>
+
+<script>
+  // Generate twinkling stars
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.setProperty('--d', (2 + Math.random() * 4).toFixed(1) + 's');
+    star.style.setProperty('--delay', (Math.random() * 4).toFixed(1) + 's');
+    star.style.setProperty('--op', (0.4 + Math.random() * 0.6).toFixed(2));
+    const size = Math.random() < 0.2 ? 3 : 2;
+    star.style.width = star.style.height = size + 'px';
+    container.appendChild(star);
+  }
+</script>
+
+</body>
+</html>
