@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Celine's Newsletter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0e0b0b;
+      color: #e8dcc8;
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(180deg, #1a0a00 0%, #0e0b0b 100%);
+      text-align: center;
+      padding: 70px 24px 50px;
+      border-bottom: 1px solid #3a2a1a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% -10%, rgba(180,120,40,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .issue-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #8a6a30;
+      margin-bottom: 18px;
+    }
+
+    .newsletter-name {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      color: #d4a843;
+      letter-spacing: 3px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .week-label {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #8a7a5a;
+      margin-bottom: 30px;
+    }
+
+    .ornament {
+      color: #6a4a20;
+      font-size: 1.4rem;
+      letter-spacing: 10px;
+    }
+
+    /* INTRO */
+    .intro-section {
+      max-width: 740px;
+      margin: 50px auto;
+      padding: 0 28px;
+      text-align: center;
+    }
+
+    .intro-section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: #d4a843;
+      letter-spacing: 3px;
+      margin-bottom: 18px;
+    }
+
+    .intro-section p {
+      color: #b0a080;
+      font-size: 1.1rem;
+      line-height: 1.9;
+    }
+
+    .intro-section p em {
+      color: #d4a843;
+      font-style: italic;
+    }
+
+    /* CARD OF THE WEEK */
+    .cotw {
+      max-width: 860px;
+      margin: 0 auto 60px;
+      padding: 0 28px;
+    }
+
+    .section-heading {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #6a4a20;
+      text-align: center;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-heading::before, .section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #3a2a1a);
+    }
+
+    .section-heading::after {
+      background: linear-gradient(to left, transparent, #3a2a1a);
+    }
+
+    .cotw-card {
+      background: linear-gradient(135deg, #1a1008 0%, #120d06 100%);
+      border: 1px solid #3a2a1a;
+      border-radius: 16px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .tarot-card-visual {
+      background: linear-gradient(160deg, #2a1a08 0%, #1a1008 100%);
+      border: 2px solid #d4a843;
+      border-radius: 10px;
+      aspect-ratio: 2/3.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      position: relative;
+      box-shadow: 0 0 30px rgba(212,168,67,0.15);
+    }
+
+    .tarot-card-visual::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(212,168,67,0.3);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .card-symbol { font-size: 3rem; }
+    .card-name-visual {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-align: center;
+      color: #d4a843;
+      text-transform: uppercase;
+    }
+
+    .cotw-content h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: #d4a843;
+      margin-bottom: 6px;
+    }
+
+    .cotw-content .card-subtitle {
+      font-style: italic;
+      color: #8a7a5a;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .cotw-content p {
+      color: #b0a080;
+      margin-bottom: 14px;
+    }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .keyword {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border: 1px solid #3a2a1a;
+      border-radius: 20px;
+      color: #8a6a30;
+      text-transform: uppercase;
+    }
+
+    /* DAILY SPREAD */
+    .spread-section {
+      max-width: 860px;
+      margin: 0 auto 60px;
+      padding: 0 28px;
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .day-card {
+      background: #120d06;
+      border: 1px solid #2a1a0a;
+      border-radius: 12px;
+      padding: 22px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .day-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, #6a4a20, #d4a843, #6a4a20);
+    }
+
+    .day-card:hover {
+      border-color: #4a3a1a;
+      transform: translateY(-3px);
+    }
+
+    .day-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6a4a20;
+      margin-bottom: 4px;
+    }
+
+    .day-card-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #d4a843;
+      margin-bottom: 2px;
+    }
+
+    .day-symbol {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .day-card p {
+      font-size: 0.92rem;
+      color: #8a7a5a;
+      line-height: 1.7;
+    }
+
+    .day-theme {
+      font-size: 0.72rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 2px;
+      color: #5a4a2a;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    /* THREE CARD READING */
+    .reading-section {
+      max-width: 860px;
+      margin: 0 auto 60px;
+      padding: 0 28px;
+    }
+
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .reading-card {
+      background: #120d06;
+      border: 1px solid #2a1a0a;
+      border-radius: 12px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .reading-position {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #5a4a2a;
+      margin-bottom: 16px;
+    }
+
+    .reading-symbol { font-size: 2.8rem; margin-bottom: 10px; }
+
+    .reading-card-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #d4a843;
+      margin-bottom: 12px;
+    }
+
+    .reading-card p {
+      font-size: 0.9rem;
+      color: #8a7a5a;
+      line-height: 1.7;
+    }
+
+    /* AFFIRMATION */
+    .affirmation {
+      max-width: 700px;
+      margin: 0 auto 60px;
+      padding: 0 28px;
+      text-align: center;
+    }
+
+    .affirmation-box {
+      background: linear-gradient(135deg, #1a1008, #120d06);
+      border: 1px solid #3a2a1a;
+      border-radius: 16px;
+      padding: 40px 36px;
+      position: relative;
+    }
+
+    .affirmation-box::before, .affirmation-box::after {
+      content: '"';
+      position: absolute;
+      font-family: 'Cinzel', serif;
+      font-size: 5rem;
+      color: #2a1a08;
+      line-height: 1;
+    }
+
+    .affirmation-box::before { top: 10px; left: 20px; }
+    .affirmation-box::after { bottom: -10px; right: 20px; }
+
+    .affirmation-box blockquote {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: #d4a843;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .affirmation-box cite {
+      display: block;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      font-style: normal;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 3px;
+      color: #6a4a20;
+    }
+
+    /* RITUAL TIP */
+    .ritual {
+      max-width: 860px;
+      margin: 0 auto 60px;
+      padding: 0 28px;
+    }
+
+    .ritual-box {
+      background: #120d06;
+      border: 1px solid #2a1a0a;
+      border-left: 3px solid #d4a843;
+      border-radius: 0 12px 12px 0;
+      padding: 28px 30px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .ritual-icon { font-size: 2rem; }
+
+    .ritual-box h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #d4a843;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .ritual-box p { color: #8a7a5a; font-size: 0.95rem; }
+
+    .ritual-steps {
+      margin-top: 14px;
+      padding-left: 18px;
+      color: #8a7a5a;
+      font-size: 0.95rem;
+    }
+
+    .ritual-steps li { margin-bottom: 6px; }
+
+    /* FOOTER */
+    footer {
+      background: #080606;
+      border-top: 1px solid #1a1008;
+      text-align: center;
+      padding: 40px 24px;
+      color: #4a3a20;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+    }
+
+    footer .footer-name {
+      font-size: 1rem;
+      color: #6a4a20;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .cotw-card { grid-template-columns: 1fr; }
+      .tarot-card-visual { max-width: 160px; margin: 0 auto; }
+      .three-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="issue-label">Weekly Tarot Reading &bull; March 7 &ndash; 14, 2026 &bull; Issue No. 23</p>
+  <h1 class="newsletter-name">Celine's Newsletter</h1>
+  <p class="week-label">Your weekly guide through the cards</p>
+  <div class="ornament">&#10022; &#10022; &#10022;</div>
+</header>
+
+<!-- INTRO -->
+<section class="intro-section">
+  <h2>A Message from Celine</h2>
+  <p>
+    Welcome back, dear souls. This week the cards speak in a clear and determined voice.
+    <em>The energy of transformation</em> is strong — the kind that doesn't ask permission.
+    We stand at a threshold where releasing the old is not just wise, but necessary.
+    Breathe in. The universe has already written the next chapter. Let's read it together.
+  </p>
+</section>
+
+<!-- CARD OF THE WEEK -->
+<section class="cotw">
+  <div class="section-heading">Card of the Week</div>
+  <div class="cotw-card">
+    <div class="tarot-card-visual">
+      <div class="card-symbol">&#9728;</div>
+      <div class="card-name-visual">The Sun</div>
+      <div class="card-symbol" style="font-size:1.2rem; color:#d4a843;">&#10022;</div>
+    </div>
+    <div class="cotw-content">
+      <h3>XIX &mdash; The Sun</h3>
+      <div class="card-subtitle">Major Arcana &bull; Ruled by the Sun</div>
+      <p>
+        The Sun rises over this week with unmistakable confidence. After a period of shadows and
+        uncertainty, clarity floods in like morning light through open curtains. This is a card of
+        joy, vitality, and truth — and it arrives not as a reward for struggle, but as a reminder
+        of what was always yours.
+      </p>
+      <p>
+        Where you have been doubting yourself, The Sun says: <em>stop.</em> Your instincts are correct.
+        The project you've been nurturing, the relationship you've been tending, the dream you've
+        been afraid to name aloud — all of these are real, and they are ready. Step forward without apology.
+      </p>
+      <div class="keywords">
+        <span class="keyword">Clarity</span>
+        <span class="keyword">Joy</span>
+        <span class="keyword">Confidence</span>
+        <span class="keyword">Truth</span>
+        <span class="keyword">Vitality</span>
+        <span class="keyword">Success</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAILY DRAW -->
+<section class="spread-section">
+  <div class="section-heading">Your Daily Draw</div>
+  <div class="days-grid">
+
+    <div class="day-card">
+      <div class="day-name">Saturday &mdash; March 7</div>
+      <div class="day-symbol">&#9770;</div>
+      <div class="day-card-name">The Moon</div>
+      <p>Trust the feelings that surface today, even if they don't make logical sense. Your intuition is your compass right now, not your mind.</p>
+      <div class="day-theme">Theme: Intuition</div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-name">Sunday &mdash; March 8</div>
+      <div class="day-symbol">&#9775;</div>
+      <div class="day-card-name">Ace of Cups</div>
+      <p>A new emotional beginning opens its door. Say yes to connection, to vulnerability, to the love that is trying to reach you today.</p>
+      <div class="day-theme">Theme: New Love</div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-name">Monday &mdash; March 9</div>
+      <div class="day-symbol">&#9876;</div>
+      <div class="day-card-name">The Emperor</div>
+      <p>Structure and discipline are your allies. Set boundaries, make decisions, and lead with quiet authority. Your steadiness inspires others.</p>
+      <div class="day-theme">Theme: Authority</div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-name">Tuesday &mdash; March 10</div>
+      <div class="day-symbol">&#9774;</div>
+      <div class="day-card-name">Five of Swords</div>
+      <p>Choose your battles wisely. Not every conflict deserves your energy. Walking away from what no longer serves you is an act of strength.</p>
+      <div class="day-theme">Theme: Discernment</div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-name">Wednesday &mdash; March 11</div>
+      <div class="day-symbol">&#9800;</div>
+      <div class="day-card-name">The Star</div>
+      <p>Hope is not naive — it is courageous. Wednesday brings renewal and a quiet faith that things are moving in the right direction. Believe it.</p>
+      <div class="day-theme">Theme: Hope</div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-name">Thursday &mdash; March 12</div>
+      <div class="day-symbol">&#9882;</div>
+      <div class="day-card-name">Three of Pentacles</div>
+      <p>Collaboration brings breakthroughs today. Share your work, ask for feedback, and remember that great things are rarely built alone.</p>
+      <div class="day-theme">Theme: Teamwork</div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-name">Friday &mdash; March 13</div>
+      <div class="day-symbol">&#9884;</div>
+      <div class="day-card-name">The World</div>
+      <p>A cycle completes. Honor how far you have come before rushing into the next chapter. Completion is its own kind of sacred arrival.</p>
+      <div class="day-theme">Theme: Completion</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THREE CARD SPREAD -->
+<section class="reading-section">
+  <div class="section-heading">Weekly Three-Card Spread</div>
+  <div class="three-cards">
+
+    <div class="reading-card">
+      <div class="reading-position">Past &mdash; What You Carry</div>
+      <div class="reading-symbol">&#9812;</div>
+      <div class="reading-card-name">The Hermit</div>
+      <p>You have spent quiet time in reflection, perhaps more than you wanted. That solitude was not emptiness — it was preparation. The wisdom you gathered in the dark is yours to keep.</p>
+    </div>
+
+    <div class="reading-card">
+      <div class="reading-position">Present &mdash; Where You Stand</div>
+      <div class="reading-symbol">&#9728;</div>
+      <div class="reading-card-name">The Sun</div>
+      <p>Right now, you are stepping into your light. The present moment is asking you to show up fully — not half-heartedly, not apologetically. You belong here. Stand in it.</p>
+    </div>
+
+    <div class="reading-card">
+      <div class="reading-position">Future &mdash; What Approaches</div>
+      <div class="reading-symbol">&#9885;</div>
+      <div class="reading-card-name">Ace of Wands</div>
+      <p>A spark of inspired action is coming. An idea, an offer, a creative impulse will arrive and demand your boldness. Say yes before your fear has a chance to say no.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- AFFIRMATION -->
+<section class="affirmation">
+  <div class="section-heading">Weekly Affirmation</div>
+  <div class="affirmation-box">
+    <blockquote>
+      I release what no longer serves my highest path. I walk forward with clarity, courage, and an open heart — trusting that the universe moves with me, not against me.
+    </blockquote>
+    <cite>&#10022; Repeat each morning this week &#10022;</cite>
+  </div>
+</section>
+
+<!-- RITUAL TIP -->
+<section class="ritual">
+  <div class="section-heading">Celine's Weekly Ritual</div>
+  <div class="ritual-box">
+    <div class="ritual-icon">&#9890;</div>
+    <div>
+      <h3>Sunday Sun Activation</h3>
+      <p>Align yourself with The Sun's energy this week with a simple Sunday morning ritual:</p>
+      <ul class="ritual-steps">
+        <li>Find a quiet spot where natural light touches you.</li>
+        <li>Hold your tarot deck to your heart and take three deep breaths.</li>
+        <li>Pull one card and ask: <em>"What do I need to illuminate this week?"</em></li>
+        <li>Write your card and its message in a journal. Carry that message with you.</li>
+        <li>Light a yellow or gold candle to honour The Sun's warmth and clarity.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Celine's Newsletter</div>
+  <p>Weekly Tarot &bull; March 7&ndash;14, 2026 &bull; Issue No. 23</p>
+  <p style="margin-top: 10px; font-size: 0.62rem;">For spiritual guidance and reflection. Trust your own intuition above all.</p>
+</footer>
+
+</body>
+</html>
